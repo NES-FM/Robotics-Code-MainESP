@@ -13,7 +13,7 @@ sys.path[1] = '/flash/lib'
 if __name__ == "__main__":
     # Setup some used Variables
     i2c_master = machine.I2C(id=0, mode=machine.I2C.MASTER, speed=400000, sda=pins["Sda-Master"], scl=pins["Scl-Master"])
-    i2c_slave = machine.I2C(id=1, mode=machine.I2C.SLAVE, speed=400000, sda=pins["Sda-Cam"], scl=pins["Scl-Cam"], slave_addr=i2csl.addr_addr)
+    # i2c_slave = machine.I2C(id=1, mode=machine.I2C.SLAVE, speed=400000, sda=pins["Sda-Cam"], scl=pins["Scl-Cam"], slave_addr=i2csl.addr_addr)
 
     WLAN_USED_SSID = "None"
     WLAN_USED_PASSWD = "None"
@@ -53,8 +53,10 @@ if __name__ == "__main__":
     if network.telnet.status()[0] == -1:
         network.telnet.start()
 
+"""
     print("BOOT: Setting default I2C data on slave bus")
     i2c_slave.setdata(bytearray("tl:f|tr:f|dl:f|dr:f"), i2csl.addr_cam_green)
     i2c_slave.setdata(bytearray("||+00"), i2csl.addr_cam_line)
 
     i2c_slave.setdata(bytearray("BUFFEREND"), i2csl.addr_bufferend)
+"""

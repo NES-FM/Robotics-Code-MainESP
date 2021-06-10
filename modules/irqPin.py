@@ -2,7 +2,7 @@ from machine import *
 
 
 class IrqPin:
-    def __init__(self, pin: int, handler, mode: int = IN, pull: int = PULL_UP, trigger: int = IRQ_FALLING,
+    def __init__(self, pin: int, handler, mode: int = Pin.IN, pull: int = Pin.PULL_UP, trigger: int = Pin.IRQ_FALLING,
                  debounce: int = 150):
         self.pin = pin
         self.mode = mode
@@ -18,7 +18,7 @@ class IrqPin:
                            debounce=self.debounce)
 
     def deinit(self):
-        self.irq_pin.init(self.pin, mode=self.mode, pull=self.pull, trigger=IRQ_DISABLE)
+        self.irq_pin.init(self.pin, mode=self.mode, pull=self.pull, trigger=Pin.IRQ_DISABLE)
 
     def value(self):
         return self.irq_pin.value()

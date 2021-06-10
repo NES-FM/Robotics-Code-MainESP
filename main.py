@@ -12,29 +12,19 @@ from machine import *
 import ujson
 from modules.irqPin import IrqPin
 from modules.pins import pins
+import utime
+from modules.cuart import CUART
 
 try:
     from modules.motor import MotorI2C, DualMI2C
 except Exception:
     print("MAIN: Exception Initializing MotorI2C:", sys.exc_info()[0])
 
-# Constatns
-red = 0xFF0000
-green = 0x00FF00
-blue = 0x0000FF
-# ---------
-
 print("MAIN: Reading Config")
 config = ujson.load(open("default_config.json", "r"))
+
 threads = {}
-
-print("MAIN: Initializing IRQ Functions")
-def m_switch():
-    if motor_stop.value() == 1:
-        _thread.notify(threads["th_cam_to_motor"], _thread.SUSPEND)
-    else:
-        _thread.notify(threads["th_cam_to_motor"], _thread.RESUME)
-
+thctm_values = {"line": (CUART.ltype_straight, 0), "green": {"tl": False, "tr": False, "dl": False, "dr": False}, "time": 0}
 
 print("MAIN: Initializing Motor")
 try:
@@ -42,13 +32,14 @@ try:
     mr = MotorI2C(i2c_master, 0x08, MotorI2C.offset_motor_2)
     m = DualMI2C(ml, mr)
 except Exception as e:
-    print("MAIN: Exception Initializing MotorI2C:", sys.exc_info()[0])
+    print("MAIN: Exception Initializing MotorI2C:\n", e)
 else:
     ## THREADING
     import _thread
     from threads import thread_cam_to_motor
 
     print("MAIN: Starting Threads...")
-    threads["th_cam_to_motor"] = _thread.start_new_thread("th_cam_to_motor", thread_cam_to_motor.th_cam_to_motor, (threads, i2c_slave, m, config))
+    threads["th_cam_to_motor"] = _thread.start_new_thread("th_cam_to_motor", thread_cam_to_motor.th_cam_to_motor, (threads, thctm_values, m, config))
 
-    motor_stop = IrqPin(pins["Sens1"], m_switch, trigger=IRQ_ANYEDGE)
+print("MAIN: Setting up Cuart connection")
+cuart = CUART(thctm_values, config)  # init using default settings

@@ -1,6 +1,8 @@
 from machine import ADC
 from time import sleep_ms
 import network
+import uos
+import ujson
 
 
 def maprange(list_bounds_1, list_bounds_2, value):
@@ -47,3 +49,64 @@ def net_restart():
         network.ftp.start()
     if network.telnet.status()[0] == -1:
         network.telnet.start()
+
+def disable_boot():
+    l = uos.listdir()
+    if "boot.disabled" not in l and "boot.py" in l:
+        uos.rename("boot.py", "boot.disabled")
+    else:
+        print("Unable to disable boot! Either boot is already disabled or you are in the wrong uos dir")
+
+
+def enable_boot():
+    l = uos.listdir()
+    if "boot.disabled" in l:
+        if "boot.py" in l:
+            uos.remove("boot.py")
+
+        uos.rename("boot.disabled", "boot.py")
+    else:
+        print("Unable to enable boot! Most likely is boot not disabled")
+
+
+def get_config(get=[]):
+    global config
+    if len(get) > 0:
+        out = []
+        for x in get:
+            out.append(config[x])
+        return zip(get, out)
+    return config
+
+def set_config(**kwargs):
+    global config
+    if len(kwargs) > 0:
+        for k,v in kwargs.items():
+            config[k] = v
+        ujson.dump(config, open("default_config.json", "w"))
+        reload_config()
+    else:
+        print("No kwargs specified")
+
+def get_debug(get=[]):
+    global config
+    if len(get) > 0:
+        out = []
+        for x in get:
+            out.append(config["debug"][x])
+        return zip(get, out)
+    return config
+
+def set_debug(**kwargs):
+    global config
+    if len(kwargs) > 0:
+        for k,v in kwargs.items():
+            config["debug"][k] = v
+        ujson.dump(config, open("default_config.json", "w"))
+        reload_config()
+    else:
+        print("No kwargs specified")
+
+def reload_config():
+    global config
+    config = ujson.load(open("default_config.json", "r"))

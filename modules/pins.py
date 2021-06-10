@@ -12,6 +12,8 @@ pins = {
     "Scl-Master": 19,
     "Sda-Cam": 22,
     "Scl-Cam": 21,
+    "Rx-Cam": 22,       # SDA -> RX
+    "Tx-Cam": 21,       # SCL -> TX
     "Dip1": 4,
     "Dip2": 30,
     "BatProbe": 32,
