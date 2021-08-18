@@ -44,3 +44,6 @@ else:
 
 print("MAIN: Setting up Cuart connection")
 cuart = CUART(thctm_values, config)  # init using default settings
+
+print("MAIN: Setting default Motor Values to 50 and 50 for testing purposes")
+m.move(50, 50)

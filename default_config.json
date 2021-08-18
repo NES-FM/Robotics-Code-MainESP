@@ -1,8 +1,9 @@
 {
-  "drive_speed": 15,
+  "drive_speed": 50,
   "debug": {
   	"cuart_data": true,
-  	"cuart_time": false
+  	"cuart_time": false,
+    "thctm_lrvalues": false
   }
 
 }

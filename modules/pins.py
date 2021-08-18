@@ -3,7 +3,7 @@ pins = {
     "Sens2": 34,        # ADC1_CH6                                      Input Only (No PullUp/Down)
     "Sens3": 35,        # ADC1_CH7                                      Input Only (No PullUp/Down)
     "Sens4": 2,         # ADC2_CH2 (Not Recommended with WIFI), T2
-    "Buzz1": 26,
+    "Buzz1": 26,		# DAC 1
     "Buzz2": 27,
     "Servo1": 16,
     "Servo2": 17,
@@ -12,10 +12,11 @@ pins = {
     "Scl-Master": 19,
     "Sda-Cam": 22,
     "Scl-Cam": 21,
-    "Rx-Cam": 22,       # SDA -> RX
-    "Tx-Cam": 21,       # SCL -> TX
+    "Rx-Cam": 21,       # TX of Cam, RX of ESP
+    "Tx-Cam": 22,       # RX of Cam, TX of ESP
     "Dip1": 4,
     "Dip2": 30,
     "BatProbe": 32,
-    "RotIrq": 5
+    "RotIrq": 5,
+    "LED_BUILTIN": 2
 }
