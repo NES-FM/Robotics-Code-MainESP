@@ -10,15 +10,16 @@ def uts(s):
 
 
 def line_handler(data, thctm_values, config):
-    thctm_values["line"] = (data[0], uts(data[1]))
+    #                       type     angle         midfactor
+    thctm_values["line"] = (data[0], uts(data[1]), uts(data[2]))
     if config["debug"]["cuart_time"]:
         last = thctm_values["time"]
         now = time.time()
         print("CUART: Line: {}s since last time".format(round(now-last,3)))
         thctm_values["time"] = now
     if config["debug"]["cuart_data"]:
-        print("CUART: Line:", data[0], uts(data[1]))
-    return data[2:]
+        print("CUART: Line:", data[0], uts(data[1]), uts(data[2]))
+    return data[3:]
 
 
 def green_handler(data, thctm_values, config):
@@ -42,12 +43,12 @@ handlers = {
 
 class CUART:
     ltype_straight = 0x00
-    ltype_90l = 0x01
-    ltype_90r = 0x02
-    ltype_tl = 0x03
-    ltype_tr = 0x04
-    ltype_t = 0x05
-    ltype_X = 0x06
+    ltype_90l = 0x01  # 90 degrees left
+    ltype_90r = 0x02  # 90 degrees right
+    ltype_tl = 0x03  # -|  t with exit left
+    ltype_tr = 0x04  # |-  t with exit right
+    ltype_t = 0x05  # T    t with exit bottom
+    ltype_X = 0x06  # +    4 way crossing
 
     gtype_none = 0b0000
     gtype_tl = 0b1000

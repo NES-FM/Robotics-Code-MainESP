@@ -8,6 +8,12 @@ import utime
 from modules.cuart import CUART
 
 
+thctm_calibrate_a = 0.00060519
+thctm_calibrate_b = -0.016327
+thctm_calibrate_c = -0.027072
+thctm_calibrate_d = 25
+
+
 def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict):
     _thread.allowsuspend(True)
 
@@ -64,18 +70,65 @@ def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict):
         # <MAIN CODE>
 
         """Line Parsing and Motor controlling"""
-        line_angle = thctm_values["line"][1]
-        line_type = thctm_values["line"][0]
+        line_type, line_angle, line_midfactor = thctm_values["line"]
 
-        l_value = r_value = config["drive_speed"]
 
         if line_type == CUART.ltype_straight:
             x = line_angle
+            drive_speed = config["drive_speed"]
+            extra = 0.5 * drive_speed
+            midextra = line_midfactor * 0.25 * drive_speed
             # l_value = constrain(maprange([-90, 0], [0, config["drive_speed"]], line_angle), 0, config["drive_speed"])
             # r_value = constrain(maprange([0, 90], [config["drive_speed"], 0], line_angle), 0, config["drive_speed"])
-            l_value = int(0.0006911*x*x*x-0.011111*x*x+0.044657*x+20)
-            r_value = int(-0.0006911*x*x*x-0.011111*x*x-0.044657*x+20)
-            # print(l_value, r_value)
+            # l_value = int(thctm_calibrate_a * x**3 - thctm_calibrate_b * x**2 + thctm_calibrate_c * x + thctm_calibrate_d)
+            # r_value = int(-1 * thctm_calibrate_a * x**3 - thctm_calibrate_b * x**2 - thctm_calibrate_c * x + thctm_calibrate_d)
+            if x > 2:
+                if x > 15:
+                    l_value = drive_speed + extra
+                    r_value = -drive_speed - extra
+                else:
+                    l_value = drive_speed
+                    r_value = 0
+                # if x < 10:
+                #     l_value = drive_speed
+                #     r_value = 0
+                # elif x < 20:
+                #     l_value = drive_speed + extra
+                #     r_value = 0
+                # elif x < 30:
+                #     l_value = drive_speed + extra
+                #     r_value = -1 * drive_speed
+                # else:
+                #     l_value = drive_speed + extra
+                #     r_value = -1 * drive_speed - extra
+
+            elif x < -2:
+                if x < -15:
+                    l_value = -drive_speed - extra
+                    r_value = drive_speed + extra
+                else:
+                    l_value = 0
+                    r_value = drive_speed
+                # if x > -10:
+                #     l_value = 0
+                #     r_value = drive_speed
+                # elif x > -20:
+                #     l_value = 0
+                #     r_value = drive_speed + extra
+                # elif x > -30:
+                #     l_value = -1 * drive_speed
+                #     r_value = drive_speed + extra
+                # else:
+                #     l_value = -1 * drive_speed - extra
+                #     r_value = drive_speed + extra
+            else:
+                l_value = r_value = drive_speed
+
+            l_value += midextra
+            r_value -= midextra
+
+            if config["debug"]["thctm_lrvalues"]:
+                print(l_value, r_value)
 
         m.move(l_value, r_value)
 

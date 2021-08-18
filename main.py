@@ -24,7 +24,8 @@ print("MAIN: Reading Config")
 config = ujson.load(open("default_config.json", "r"))
 
 threads = {}
-thctm_values = {"line": (CUART.ltype_straight, 0), "green": {"tl": False, "tr": False, "dl": False, "dr": False}, "time": 0}
+#                        type              angle  midfactor     top left     top right    down left    down right
+thctm_values = {"line": (CUART.ltype_straight, 0, 0), "green": {"tl": False, "tr": False, "dl": False, "dr": False}, "time": 0}
 
 print("MAIN: Initializing Motor")
 try:
