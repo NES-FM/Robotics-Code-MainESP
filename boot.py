@@ -1,12 +1,18 @@
 # This file is executed on every boot (including wake-boot from deepsleep) aka changed
 
-import network
-import time
+# Blinking LED once to signal booting
 import machine
+from modules.pins import pins
+import time
+led = machine.Pin(pins["LED_BUILTIN"], machine.Pin.OUT)
+led.value(True)
+time.sleep_ms(250)
+led.value(False)
+
+import network
 from modules import i2c_slave_addresses as i2csl
 import sys
 from modules.secrets import *
-from modules.pins import pins
 sys.path[1] = '/flash/lib'
 
 
