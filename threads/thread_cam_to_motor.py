@@ -38,6 +38,8 @@ def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict, disp: di
                 while _thread.wait() != _thread.RESUME:
                     pass
                 print("{}: resumed".format(cur_name.upper()))
+            elif ntf == thr_msg.HEARTBEAT:
+                _thread.sendmsg(threads["th_heartbeat"], thr_msg.HEARTBEAT_RESPONSE)
             else:
                 # Default notification handling
                 pass
