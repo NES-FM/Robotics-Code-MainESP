@@ -1,11 +1,12 @@
 #  https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/thread
 
 import _thread
-from threads import thread_messages as thr_msg
+from threads.thread_messages import thread_messages as thr_msg
 from modules import i2c_slave_addresses as i2csl
 from modules.functions import *
 import utime
 from modules.cuart import CUART
+from modules.display import display
 
 
 thctm_calibrate_a = 0.00060519
@@ -14,7 +15,7 @@ thctm_calibrate_c = -0.027072
 thctm_calibrate_d = 25
 
 
-def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict):
+def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict, disp: display):
     _thread.allowsuspend(True)
 
     cur_name = _thread.getSelfName()

@@ -50,6 +50,8 @@ class CUART:
     ltype_t = 0x05  # T    t with exit bottom
     ltype_X = 0x06  # +    4 way crossing
 
+    ltype_strings = {ltype_straight: "Straight", ltype_90l: "90 Left", ltype_90r: "90 Right", ltype_tl: "T left", ltype_tr: "T right", ltype_t: "T bottom", ltype_X: "4 Way"}
+
     gtype_none = 0b0000
     gtype_tl = 0b1000
     gtype_tr = 0b0100
