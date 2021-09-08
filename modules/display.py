@@ -26,18 +26,18 @@ class display(SSD1306_I2C):
         self.draw_rect(4, 6, 4, 8, color=0)
         self.show()
 
-    def refresh(self):
+    def refresh(self, x):
         self.fill(0)
 
         self.draw_battery()
 
-        self.text("{0}    {1:+} {2:+}".format(self.line1["batteryVoltage"], self.line1["leftMotor"], self.line1["rightMotor"]), 0, 18)
-        
-        self.text("{0:+03d} {1:+02d} {2}".format(self.line2["cuartAngle"], self.line2["cuartMidfactor"], CUART.ltype_strings.get(self.line2["cuartType"], "UNKNOWN")), 16, 0)
+        self.text("{0}    {1:+} {2:+}".format(self.line1["batteryVoltage"], self.line1["leftMotor"], self.line1["rightMotor"]), 18, 0)
 
-        self.text(self.line3, 32, 0)
+        self.text("{0:+03d} {1:+02d} {2}".format(self.line2["cuartAngle"], self.line2["cuartMidfactor"], CUART.ltype_strings.get(self.line2["cuartType"], "UNKNOWN")), 0, 16)
 
-        self.text(self.line4, 48, 0)
+        self.text(self.line3, 0, 32)
+
+        self.text(self.line4, 0, 48)
 
         self.show()
 
