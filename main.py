@@ -14,7 +14,6 @@ from modules.irqPin import IrqPin
 from modules.pins import pins
 import utime
 from modules.cuart import CUART
-from modules.display import display
 
 try:
     from modules.motor import MotorI2C, DualMI2C
@@ -23,13 +22,6 @@ except Exception:
 
 print("MAIN: Reading Config")
 config = ujson.load(open("default_config.json", "r"))
-
-print("MAIN: Initializing display")
-try:
-    disp = display(i2c_master)
-except Exception as e:
-    print("MAIN: Exception Initializing display:\n", e)
-
 
 threads = {}
 #                        type              angle  midfactor     top left     top right    down left    down right

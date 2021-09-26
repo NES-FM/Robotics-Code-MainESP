@@ -15,16 +15,25 @@ import sys
 from modules.secrets import *
 sys.path[1] = '/flash/lib'
 
+from modules.display import display
+
 
 if __name__ == "__main__":
     # Setup some used Variables
     i2c_master = machine.I2C(id=0, mode=machine.I2C.MASTER, speed=400000, sda=pins["Sda-Master"], scl=pins["Scl-Master"])
     # i2c_slave = machine.I2C(id=1, mode=machine.I2C.SLAVE, speed=400000, sda=pins["Sda-Cam"], scl=pins["Scl-Cam"], slave_addr=i2csl.addr_addr)
 
+    print("BOOT: Initializing display")
+    try:
+        disp = display(i2c_master)
+    except Exception as e:
+        print("BOOT: Exception Initializing display:\n", e)
+
     WLAN_USED_SSID = "None"
     WLAN_USED_PASSWD = "None"
 
     print("BOOT: Initializing Wifi")
+    disp.debug("Initing Wifi")
 
     wlan = network.WLAN()
 
@@ -37,10 +46,16 @@ if __name__ == "__main__":
             for net in local_wlan:
                 if net[0].decode("UTF-8") == ssid:
                     print("BOOT: [Wifi] Connecting to " + ssid)
+
+                    disp.debug("Wifi: {}".format(ssid))
+
                     wlan.ifconfig((ips + WLAN_IP, '255.255.255.0', ips + '1', ips + '1'))
                     wlan.connect(ssid, pwd)
                     time.sleep(6)
                     print("BOOT: [Wifi] Connected! Ip: {}".format(wlan.ifconfig()[0]))
+
+                    disp.debug("Connected: {}".format(ssid))
+
                     WLAN_USED_SSID = ssid
                     WLAN_USED_PASSWD = pwd
                     break
@@ -48,6 +63,9 @@ if __name__ == "__main__":
                 break
         else:
             print("BOOT: [Wifi] Changing to AP Mode")
+
+            disp.debug("Wifi AP mode")
+
             wlan = network.WLAN(network.AP_IF)
             wlan.active(True)
             time.sleep(1)
