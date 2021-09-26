@@ -11,7 +11,10 @@ def uts(s):
 
 def line_handler(data, thctm_values, config):
     #                       type     angle         midfactor
-    thctm_values["line"] = (data[0], uts(data[1]), uts(data[2]))
+    try:
+        thctm_values["line"] = (data[0], uts(data[1]), uts(data[2]))
+    except:
+        print("Error in lh:",data)
     if config["debug"]["cuart_time"]:
         last = thctm_values["time"]
         now = time.time()

@@ -132,14 +132,14 @@ def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict, disp: di
             r_value -= midextra
             """
 
-            if line_angle > 10:
-                l_value = 30
-                r_value = 0
-            elif line_angle < -10:
-                l_value = 0
-                r_value = 30
+            if line_angle > 3:
+                l_value = 20
+                r_value = -20
+            elif line_angle < -3:
+                l_value = -20
+                r_value = 20
             else:
-                l_value = r_value = 30
+                l_value = r_value = 20
 
 
             if config["debug"]["thctm_lrvalues"]:
