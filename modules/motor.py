@@ -144,7 +144,7 @@ class MotorI2C(object):
             if speed < 0:
                 direction = self.direc_backward
             elif speed == 0:
-                direction = self.direc_stop
+                direction = self.direc_off
             elif speed > 0:
                 direction = self.direc_forward
         elif direction == self.direc_stop:
