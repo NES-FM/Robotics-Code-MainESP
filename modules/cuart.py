@@ -61,7 +61,7 @@ class CUART:
     gtype_dr = 0b0001
 
     def __init__(self, thctm_values, config, uart_num=1, baudrate=115200, bits=8, parity=None, tx=pins["Tx-Cam"],
-                        rx=pins["Rx-Cam"], timeout=15, buffer_size=512, lineend=b'\n'):
+                        rx=pins["Rx-Cam"], timeout=15, buffer_size=512, lineend=b'\x00\xff'):
         self.thctm_values = thctm_values
         self.config = config
         self.uart_num = uart_num
