@@ -77,6 +77,7 @@ def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict, disp: di
 
 
         if line_type == CUART.ltype_straight:
+            """
             x = line_angle
             drive_speed = config["drive_speed"]
             extra = 0.5 * drive_speed
@@ -129,6 +130,17 @@ def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict, disp: di
 
             l_value += midextra
             r_value -= midextra
+            """
+
+            if line_angle > 10:
+                l_value = 30
+                r_value = 0
+            elif line_angle < -10:
+                l_value = 0
+                r_value = 30
+            else:
+                l_value = r_value = 30
+
 
             if config["debug"]["thctm_lrvalues"]:
                 print(l_value, r_value)
