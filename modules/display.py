@@ -27,19 +27,22 @@ class display(SSD1306_I2C):
         self.show()
 
     def refresh(self, x):
-        self.fill(0)
+        try:
+            self.fill(0)
 
-        self.draw_battery()
+            self.draw_battery()
 
-        self.text("{0}    {1:+} {2:+}".format(self.line1["batteryVoltage"], self.line1["leftMotor"], self.line1["rightMotor"]), 18, 0)
+            self.text("{0}    {1:+} {2:+}".format(self.line1["batteryVoltage"], self.line1["leftMotor"], self.line1["rightMotor"]), 18, 0)
 
-        self.text("{0:+03d} {1:+02d} {2}".format(self.line2["cuartAngle"], self.line2["cuartMidfactor"], CUART.ltype_strings.get(self.line2["cuartType"], "UNKNOWN")), 0, 16)
+            self.text("{0:+03d} {1:+02d} {2}".format(self.line2["cuartAngle"], self.line2["cuartMidfactor"], CUART.ltype_strings.get(self.line2["cuartType"], "UNKNOWN")), 0, 16)
 
-        self.text(self.line3, 0, 32)
+            self.text(self.line3, 0, 32)
 
-        self.text(self.line4, 0, 48)
+            self.text(self.line4, 0, 48)
 
-        self.show()
+            self.show()
+        except:
+            pass
 
     def set_values_thctm(self, lmotor, rmotor, cangle, cmidfactor, ctype, cdots = [False, True, False, False]):
         self.line1["leftMotor"] = lmotor
