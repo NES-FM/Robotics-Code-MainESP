@@ -147,7 +147,7 @@ def th_cam_to_motor(threads: dict, thctm_values: dict, m, config: dict, disp: di
 
         m.move(l_value, r_value)
 
-        disp.set_values_thctm(l_value, r_value, line_angle, line_midfactor, line_type)
+        disp.set_values_thctm(l_value, r_value, line_angle, line_midfactor, line_type, thctm_values["sensor_array"])
 
         # </MAIN CODE>
 
