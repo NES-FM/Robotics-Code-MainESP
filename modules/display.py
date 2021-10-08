@@ -13,6 +13,7 @@ class display(SSD1306_I2C):
     cuart_sensor_array = []
     line3 = ""
     line4 = ""
+    clock_pixel_status = False
     def __init__(self, i2c, width=128, height=64, addr=0x3c, external_vcc=False):
         self.timer = Timer(0)
         self.timer.init(period=100, callback=self.refresh)
@@ -28,10 +29,10 @@ class display(SSD1306_I2C):
         self.draw_rect(4, 6, 4, 8, color=0)
 
     def draw_sensor_array(self):
-        self.draw_rect(2, 31, 51, 34)
-        i = 3
+        self.draw_rect(17, 29, 66, 32)
+        i = 18
         for x in self.cuart_sensor_array:
-            self.draw_rect(i, 32, i+1, 33, x)
+            self.draw_rect(i, 30, i+1, 31, x)
             i += 2
 
     def refresh(self, x):
@@ -49,6 +50,9 @@ class display(SSD1306_I2C):
             self.text(self.line3, 0, 35)
 
             self.text(self.line4, 0, 51)
+            
+            self.pixel(127,63,self.clock_pixel_status)
+            self.clock_pixel_status = not self.clock_pixel_status
 
             self.show()
         except:
