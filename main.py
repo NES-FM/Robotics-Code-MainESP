@@ -25,7 +25,7 @@ config = ujson.load(open("default_config.json", "r"))
 
 threads = {}
 #                        type              angle  midfactor     top left     top right    down left    down right
-thctm_values = {"line": (CUART.ltype_straight, 0, 0), "green": {"tl": False, "tr": False, "dl": False, "dr": False}, "time": 0}
+thctm_values = {"line": (CUART.ltype_straight, 0, 0), "green": {"tl": False, "tr": False, "dl": False, "dr": False}, "time": 0, "sensor_array": [0 for x in range(24)]}
 
 print("MAIN: Initializing Motor")
 disp.debug("Init. Motor")

@@ -33,6 +33,21 @@ def green_handler(data, thctm_values, config):
     return data[1:]
 
 
+def single_bit(data, num):
+    base = int(num // 8)
+    shift = int(num % 8)
+    return (data[base] >> shift) & 0x1
+
+
+def sensor_array_handler(data, thctm_values, config):
+    tmp_data = [int(x) for x in data[0:3]]
+    tmp_data.reverse()
+    thctm_values["sensor_array"] = [single_bit(tmp_data, i) for i in range(len(tmp_data)*8)]
+    thctm_values["sensor_array"].reverse()
+    if config["debug"]["cuart_data"]:
+        print("CUART: Array: ",thctm_values["sensor_array"])
+    return data[3:]
+
 def unknown_packet(data, thctm_values):
     print("CUART: Unknown data:", data)
     return data
@@ -40,7 +55,8 @@ def unknown_packet(data, thctm_values):
 
 handlers = {
     "L": line_handler,
-    "G": green_handler
+    "G": green_handler,
+    "S": sensor_array_handler
 }
 
 
